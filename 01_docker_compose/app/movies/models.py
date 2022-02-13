@@ -58,8 +58,7 @@ class Person(UUIDMixin, TimeStampedMixin):
 
 
 class Filmwork(UUIDMixin, TimeStampedMixin):
-    genres = models.ManyToManyField(Genre, through='GenreFilmwork')
-
+    
     title = models.TextField(_('title'), max_length=200)
 
     description = models.TextField(_('description'), blank=True, max_length=3000, null=True)

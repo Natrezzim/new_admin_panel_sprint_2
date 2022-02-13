@@ -26,6 +26,7 @@ rm -rf app/sqlite_to_postgres
 rm -rf app/tests
 rm -rf app/sqlscript
 rm -rf app/movies_schema.sql
+python app/manage.py collectstatic
 python app/manage.py runserver 0.0.0.0:8000
 
 
