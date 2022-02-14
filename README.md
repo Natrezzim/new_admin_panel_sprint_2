@@ -1,4 +1,4 @@
-#Комманды после запускап проекта
+#Комманды после запуска проекта  
 *python app/manage.py flush --no-input*  
 *python app/manage.py migrate*  
 *python app/sqlite_to_postgres/load_data.py*  
