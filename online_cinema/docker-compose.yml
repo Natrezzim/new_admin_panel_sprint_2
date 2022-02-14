@@ -1,5 +1,5 @@
-version: '3.7'
 services:
+
   service:
     build:
       context: .
@@ -12,6 +12,7 @@ services:
       - ./app/config/.env
     depends_on:
       - db
+
   db:
     image: postgres:12.0-alpine
     volumes:
@@ -19,6 +20,7 @@ services:
       - ./app/sqlscript/movies_schema.sql:/docker-entrypoint-initdb.d/movies_schema.sql
     env_file:
       - ./app/config/.env
+
   nginx:
     build:
       context: ./nginx
@@ -29,6 +31,7 @@ services:
       - static_volume:/home/app/static
     depends_on:
       - service
+
 volumes:
   postgres_data:
   static_volume:

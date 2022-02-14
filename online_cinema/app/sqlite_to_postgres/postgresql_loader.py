@@ -1,7 +1,6 @@
 import logging
-from logging import info, warning
-
 from dataclasses import asdict
+from logging import info, warning
 
 import psycopg2
 

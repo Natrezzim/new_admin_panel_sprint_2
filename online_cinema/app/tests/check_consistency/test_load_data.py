@@ -3,7 +3,7 @@ import os
 import sqlite3
 
 import psycopg2
-from dotenv import load_dotenv, dotenv_values
+from dotenv import dotenv_values, load_dotenv
 
 load_dotenv()
 config = dotenv_values("../../config/.env")

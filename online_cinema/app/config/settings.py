@@ -1,7 +1,7 @@
 import os
-import socket
 from pathlib import Path
-from dotenv import load_dotenv, dotenv_values
+
+from dotenv import dotenv_values, load_dotenv
 from split_settings.tools import include
 
 load_dotenv()

@@ -1,6 +1,6 @@
 import logging
 import sqlite3
-from logging import warning, info
+from logging import info, warning
 
 from models import FilmWork, Genre, GenreFilmWork, Person, PersonFilmWork
 
