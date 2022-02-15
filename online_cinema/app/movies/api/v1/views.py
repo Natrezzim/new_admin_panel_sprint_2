@@ -7,19 +7,14 @@ from django.http import JsonResponse
 from django.views.generic import DetailView
 from django.views.generic.list import BaseListView
 
-from ...models import Filmwork
+from ...models import Filmwork, Role
 
 logger = logging.getLogger("Paginator Logger")
 logger.setLevel(logging.DEBUG)
 
 
 def aggregate_person(role: str):
-    if role == 'actors':
-        return ArrayAgg('persons__full_name', filter=Q(personfilmwork__role='actor'), distinct=True)
-    elif role == 'directors':
-        return ArrayAgg('persons__full_name', filter=Q(personfilmwork__role='director'), distinct=True)
-    elif role == 'writers':
-        return ArrayAgg('persons__full_name', filter=Q(personfilmwork__role='writer'), distinct=True)
+    return ArrayAgg('persons__full_name', filter=Q(personfilmwork__role=role), distinct=True)
 
 
 class MoviesApiMixin:
@@ -28,12 +23,12 @@ class MoviesApiMixin:
 
     @staticmethod
     def get_queryset():
-        context = Filmwork.objects.all().order_by('title').values('id', 'title', 'description', 'creation_date',
+        context = Filmwork.objects.order_by('title').values('id', 'title', 'description', 'creation_date',
                                                                   'rating', 'type', ).annotate(
             genres=ArrayAgg('genres__name', distinct=True),
-            actors=aggregate_person('actors'),
-            directors=aggregate_person('directors'),
-            writers=aggregate_person('writers'), )
+            actors=aggregate_person(Role.ACTOR),
+            directors=aggregate_person(Role.DIRECTOR),
+            writers=aggregate_person(Role.WRITER), )
         return context
 
     @staticmethod
@@ -51,21 +46,11 @@ class MoviesListApi(MoviesApiMixin, BaseListView):
             self.paginate_by
         )
 
-        if page.has_next():
-            next_page = page.next_page_number()
-        else:
-            next_page = None
-
-        if page.has_previous():
-            prev_page = page.previous_page_number()
-        else:
-            prev_page = None
-
         context = {
             'count': paginator.count,
             'total_pages': paginator.num_pages,
-            'prev': prev_page,
-            'next': next_page,
+            'prev': page.previous_page_number() if page.has_previous() else None,
+            'next': page.next_page_number() if page.has_next() else None,
             'results': list(queryset),
         }
         return context
